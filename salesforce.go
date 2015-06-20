@@ -24,7 +24,7 @@ type SalesforceClient struct {
 	HttpClient  *http.Client
 }
 
-func (s *SalesforceClient) getJsonDataFromURL(requestURL string) (interface{}, error) {
+func (s *SalesforceClient) getDataFromURL(requestURL string) (interface{}, error) {
 
 	var data interface{}
 	req, err := http.NewRequest("GET", requestURL, nil)
@@ -45,7 +45,7 @@ func (s *SalesforceClient) getJsonDataFromURL(requestURL string) (interface{}, e
 	return data, err
 }
 
-func (s *SalesforceClient) setJsonDataForURL(httpMethod string, requestURL string,
+func (s *SalesforceClient) setDataForURL(httpMethod string, requestURL string,
 	data interface{}) (interface{}, error) {
 
 	retData := make(map[string]interface{})
@@ -119,7 +119,7 @@ func NewSalesforceClient(instanceURL string, sessionID string) *SalesforceClient
 func (s *SalesforceClient) Describe() (interface{}, error) {
 
 	requestURL := s.BaseURL + "sobjects"
-	data, err := s.getJsonDataFromURL(requestURL)
+	data, err := s.getDataFromURL(requestURL)
 	if err != nil {
 		return data, err
 	}
@@ -134,7 +134,7 @@ func (s *SalesforceClient) Search(query string) (interface{}, error) {
 	v.Set("q", query)
 
 	requestURL := s.BaseURL + "search/" + v.Encode()
-	data, err := s.getJsonDataFromURL(requestURL)
+	data, err := s.getDataFromURL(requestURL)
 	if err != nil {
 		return data, err
 	}
@@ -147,7 +147,7 @@ func (s *SalesforceClient) Create(objectName string,
 	data interface{}) (interface{}, error) {
 
 	requestURL := s.BaseURL + objectName
-	data, err := s.setJsonDataForURL("POST", requestURL, data)
+	data, err := s.setDataForURL("POST", requestURL, data)
 	if err != nil {
 		return data, err
 	}
@@ -160,7 +160,7 @@ func (s *SalesforceClient) Get(objectName string,
 	recordID string) (interface{}, error) {
 
 	requestURL := s.BaseURL + objectName + "/" + recordID
-	data, err := s.getJsonDataFromURL(requestURL)
+	data, err := s.getDataFromURL(requestURL)
 	if err != nil {
 		return data, err
 	}
@@ -173,7 +173,7 @@ func (s *SalesforceClient) Upsert(objectName string, recordID string,
 	data interface{}) (interface{}, error) {
 
 	requestURL := s.BaseURL + objectName + "/" + recordID
-	data, err := s.setJsonDataForURL("PATCH", requestURL, data)
+	data, err := s.setDataForURL("PATCH", requestURL, data)
 	if err != nil {
 		return data, err
 	}
@@ -186,7 +186,7 @@ func (s *SalesforceClient) Update(objectName string, recordID string,
 	data interface{}) (interface{}, error) {
 
 	requestURL := s.BaseURL + objectName + "/" + recordID
-	data, err := s.setJsonDataForURL("PATCH", requestURL, data)
+	data, err := s.setDataForURL("PATCH", requestURL, data)
 	if err != nil {
 		return data, err
 	}
