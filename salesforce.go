@@ -1,6 +1,6 @@
 // Package salesforce is based on the Python "Simple-Salesforce" library. It provides the
 // basic CRUD operations for Salesforce. Currently only OAuth2 authentication is supported
-package salesforce
+package gosalesforce
 
 import (
 	"bytes"

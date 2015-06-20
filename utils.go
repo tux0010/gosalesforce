@@ -1,4 +1,4 @@
-package salesforce
+package gosalesforce
 
 import (
 	"encoding/json"
