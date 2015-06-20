@@ -11,7 +11,7 @@ import (
 	"net/url"
 )
 
-const Version = 31
+const Version = "31.0"
 
 // SalesforceClient struct contains information about a salesforce
 // OAuth 2 session
@@ -27,7 +27,16 @@ type SalesforceClient struct {
 func (s *SalesforceClient) getJsonDataFromURL(requestURL string) (interface{}, error) {
 
 	var data interface{}
-	resp, err := s.HttpClient.Get(requestURL)
+	req, err := http.NewRequest("GET", requestURL, nil)
+	if err != nil {
+		return data, err
+	}
+	// set the HTTP headers
+	for k, v := range s.Header {
+		req.Header.Set(k, v)
+	}
+
+	resp, err := s.HttpClient.Do(req)
 	if err != nil {
 		return data, err
 	}
@@ -86,10 +95,10 @@ func (s *SalesforceClient) deleteDataForURL(requestURL string) error {
 // initialied with the required fields
 func NewSalesforceClient(instanceURL string, sessionID string) *SalesforceClient {
 
-	baseURL := fmt.Sprintf("https://%s/services/data/v%d/", instanceURL, Version)
+	baseURL := fmt.Sprintf("%s/services/data/v%s/sobjects/", instanceURL, Version)
 	header := map[string]string{
 		"Content-Type":  "application/json",
-		"Authorization": "Bearer " + sessionID,
+		"Authorization": "OAuth " + sessionID,
 	}
 
 	cookieJar, _ := cookiejar.New(nil)
