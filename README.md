@@ -1,4 +1,4 @@
-# gosalesforce
+# Gosalesforce
 Golang Salesforce REST API library. This library is inspired by the excellent "Simple-Salesforce" Python library.
 Currently only OAuth2 is supported and an interface{} object is returned to keep things simple.
 
